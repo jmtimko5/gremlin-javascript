@@ -33,6 +33,8 @@ class GremlinClient extends EventEmitter {
       executeHandler,
       ssl: false,
       rejectUnauthorized: true,
+      autoReconnect: true,
+      reconnectAttempts: 5,
       user: '',
       password: '',
       ...options,
@@ -52,7 +54,12 @@ class GremlinClient extends EventEmitter {
 
     this.commands = {};
 
-    const { ssl, rejectUnauthorized } = this.options;
+    const {
+      ssl,
+      rejectUnauthorized,
+      autoReconnect,
+      reconnectAttempts,
+    } = this.options;
 
     this.connection = this.createConnection({
       port,
@@ -60,16 +67,28 @@ class GremlinClient extends EventEmitter {
       path: this.options.path,
       ssl,
       rejectUnauthorized,
+      autoReconnect,
+      reconnectAttempts,
     });
   }
 
-  createConnection({ port, host, path, ssl, rejectUnauthorized }) {
+  createConnection({
+    port,
+    host,
+    path,
+    ssl,
+    rejectUnauthorized,
+    autoReconnect,
+    reconnectAttempts,
+  }) {
     const connection = new WebSocketGremlinConnection({
       port,
       host,
       path,
       ssl,
       rejectUnauthorized,
+      autoReconnect,
+      reconnectAttempts,
     });
 
     connection.on('open', () => this.onConnectionOpen());
