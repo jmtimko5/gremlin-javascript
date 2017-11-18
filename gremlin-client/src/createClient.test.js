@@ -49,6 +49,22 @@ describe('.createClient()', function() {
     client.options.accept.should.equal('application/xml');
   });
 
+  it('should allow setting the `autoReconnect` option', function() {
+    var client = gremlin.createClient({ autoReconnect: false });
+
+    client.port.should.equal(8182);
+    client.host.should.equal('localhost');
+    client.options.autoReconnect.should.equal(false);
+  });
+
+  it('should allow setting the `reconnectAttempts` option', function() {
+    var client = gremlin.createClient({ reconnectAttempts: 2 });
+
+    client.port.should.equal(8182);
+    client.host.should.equal('localhost');
+    client.options.reconnectAttempts.should.equal(2);
+  });
+
   it('should support aliases', function() {
     const client = gremlin.createClient({
       aliases: {

@@ -197,7 +197,11 @@ describe('.execute()', function() {
     const g = client.traversalSource();
     const { both } = statics;
 
-    const results = await g.V().repeat(both('created')).times(2).toPromise();
+    const results = await g
+      .V()
+      .repeat(both('created'))
+      .times(2)
+      .toPromise();
     assert.equal(results.length, 16);
   });
 });
